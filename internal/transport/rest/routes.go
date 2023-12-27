@@ -8,6 +8,14 @@ import (
 	"os"
 )
 
+const (
+	assets     = "assets"
+	templeDir  = "html/templates/*.tmpl"
+	templeFoo  = "html/templates/foo/*.tmpl"
+	templeHome = "html/templates/home/*.tmpl"
+	templePage = "html/templates/page/*.tmpl"
+)
+
 type Rest struct {
 	Router *gin.Engine
 	Files  fs.FS
@@ -16,22 +24,28 @@ type Rest struct {
 func New() *Rest {
 	f := os.DirFS("assets")
 	return &Rest{
-		Router: gin.New(),
+		Router: setupRouter(),
 		Files:  f,
 	}
 }
 
-const (
-	templeDir = "html/templates/*.tmpl"
-	templeFoo = "html/templates/foo/*.tmpl"
-)
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+	return r
+}
 
 func (r *Rest) Routes() {
-	temple := template.Must(template.New("").ParseFS(r.Files, templeDir, templeFoo))
+	temple := template.Must(template.New("").ParseFS(r.Files, templeDir, templeFoo, templeHome, templePage))
 	r.Router.SetHTMLTemplate(temple)
-	r.Router.StaticFS("/public", http.FS(r.Files))
+	r.Router.StaticFS("/public", http.Dir(assets))
 
 	r.Router.GET("/", r.home)
-	r.Router.GET("/ping", r.pong)
-	//r.Router.GET("favicon.ico", r.icon)
+	r.Router.GET("/ping", r.ping)
+	r.Router.GET("/user/:name", r.getUser)
+	r.Router.GET("favicon.ico", r.icon)
+	r.Router.GET("/prologue", r.prologue)
+	r.Router.GET("/test", r.test)
+	r.Router.GET("/list", r.page)
+
+	r.authorizedGroup()
 }

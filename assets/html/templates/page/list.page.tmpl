@@ -1,0 +1,55 @@
+{{template "base" .}}
+
+{{define "title"}}Siro ta{{end}}
+
+{{define "main"}}
+    <div class="image-container">
+        <img src="/public/img/bg/ext_beach2_day.jpg" alt="ext_beach2_day.jpg">
+        <div class="overlay-text">Bruh bruh bruh bruh СИРОТА КАЗАНСКАЯ НАЧАЛО</div>
+        <button class="overlay-button" onclick="handleClick()">Next</button>
+    </div>
+
+    <style>
+        .image-container {
+            position: relative;
+            width:
+            height:
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .overlay-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+        }
+
+        .overlay-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+
+            background-color: rgb(3, 182, 252);
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .overlay-button:hover {
+            background-color: navy;
+        }
+    </style>
+
+    <script>
+        function handleClick() {
+            alert('Button is clicked');
+        }
+    </script>
+{{end}}
